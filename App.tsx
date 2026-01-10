@@ -6,8 +6,13 @@ import { Pressable, Text } from "react-native";
 import LoginScreen from "./src/screens/LoginScreen";
 import TeacherHomeScreen from "./src/screens/TeacherHomeScreen";
 import ParentHomeScreen from "./src/screens/ParentHomeScreen";
+
 import GradesListScreen from "./src/screens/GradesListScreen";
 import AddGradeScreen from "./src/screens/AddGradeScreen";
+
+import AttendanceListScreen from "./src/screens/AttendanceListScreen";
+import AddAttendanceScreen from "./src/screens/AddAttendanceScreen";
+
 import { AppDataProvider } from "./src/data/AppDataContext";
 
 /* =========================
@@ -36,9 +41,14 @@ type RootStackParamList = {
   Login: undefined;
   TeacherHome: undefined;
   ParentHome: undefined;
+
   GradesListTeacher: undefined;
   GradesListParent: undefined;
   AddGrade: undefined;
+
+  AttendanceListTeacher: undefined;
+  AttendanceListParent: undefined;
+  AddAttendance: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -61,16 +71,16 @@ export default function App() {
                 options={{
                   title: "Profe",
                   headerRight: () => (
-                    <TextButton
-                      label="Salir"
-                      onPress={() => setRole(null)}
-                    />
+                    <TextButton label="Salir" onPress={() => setRole(null)} />
                   ),
                 }}
               >
                 {({ navigation }) => (
                   <TeacherHomeScreen
                     goGrades={() => navigation.navigate("GradesListTeacher")}
+                    goAttendance={() =>
+                      navigation.navigate("AttendanceListTeacher")
+                    }
                   />
                 )}
               </Stack.Screen>
@@ -92,6 +102,27 @@ export default function App() {
                   <AddGradeScreen onDone={() => navigation.goBack()} />
                 )}
               </Stack.Screen>
+
+              <Stack.Screen
+                name="AttendanceListTeacher"
+                options={{ title: "Asistencia" }}
+              >
+                {({ navigation }) => (
+                  <AttendanceListScreen
+                    mode="teacher"
+                    onAdd={() => navigation.navigate("AddAttendance")}
+                  />
+                )}
+              </Stack.Screen>
+
+              <Stack.Screen
+                name="AddAttendance"
+                options={{ title: "Marcar asistencia" }}
+              >
+                {({ navigation }) => (
+                  <AddAttendanceScreen onDone={() => navigation.goBack()} />
+                )}
+              </Stack.Screen>
             </>
           ) : (
             <>
@@ -100,22 +131,29 @@ export default function App() {
                 options={{
                   title: "Padre",
                   headerRight: () => (
-                    <TextButton
-                      label="Salir"
-                      onPress={() => setRole(null)}
-                    />
+                    <TextButton label="Salir" onPress={() => setRole(null)} />
                   ),
                 }}
               >
                 {({ navigation }) => (
                   <ParentHomeScreen
                     goGrades={() => navigation.navigate("GradesListParent")}
+                    goAttendance={() =>
+                      navigation.navigate("AttendanceListParent")
+                    }
                   />
                 )}
               </Stack.Screen>
 
               <Stack.Screen name="GradesListParent" options={{ title: "Notas" }}>
                 {() => <GradesListScreen mode="parent" />}
+              </Stack.Screen>
+
+              <Stack.Screen
+                name="AttendanceListParent"
+                options={{ title: "Asistencia" }}
+              >
+                {() => <AttendanceListScreen mode="parent" />}
               </Stack.Screen>
             </>
           )}

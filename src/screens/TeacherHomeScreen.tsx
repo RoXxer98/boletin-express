@@ -2,9 +2,13 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 
 type Props = {
   goGrades: () => void;
+  goAttendance: () => void;
 };
 
-export default function TeacherHomeScreen({ goGrades }: Props) {
+export default function TeacherHomeScreen({
+  goGrades,
+  goAttendance,
+}: Props) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Panel del Profe</Text>
@@ -13,7 +17,11 @@ export default function TeacherHomeScreen({ goGrades }: Props) {
         <Text style={styles.buttonText}>Notas</Text>
       </Pressable>
 
-      <Text style={styles.hint}>Luego aquí pondremos Asistencia.</Text>
+      <Pressable style={styles.button} onPress={goAttendance}>
+        <Text style={styles.buttonText}>Asistencia</Text>
+      </Pressable>
+
+      <Text style={styles.hint}>Luego aquí pondremos más opciones.</Text>
     </View>
   );
 }
