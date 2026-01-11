@@ -13,7 +13,7 @@ export default function AddGradeScreen({ onDone }: Props) {
   const [score, setScore] = useState("");
   const [comment, setComment] = useState("");
 
-  const save = () => {
+  const save = async () => {
     const trimmedSubject = subject.trim();
     const num = Number(score);
 
@@ -27,13 +27,17 @@ export default function AddGradeScreen({ onDone }: Props) {
       return;
     }
 
-    addGrade({
-      subject: trimmedSubject,
-      score: num,
-      comment: comment.trim() || undefined,
-    });
+    try {
+      await addGrade({
+        subject: trimmedSubject,
+        score: num,
+        comment: comment.trim() || undefined,
+      });
 
-    onDone();
+      onDone();
+    } catch (e: any) {
+      Alert.alert("Error", e?.message ?? "No se pudo guardar la nota.");
+    }
   };
 
   return (
